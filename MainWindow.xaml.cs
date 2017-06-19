@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Globalization;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -28,14 +29,16 @@ namespace EV3_Test
         string ri = "C";
         int fo_po = 60;
         int back_po = -60;
+        Vector m_vtJoystickPos = new Vector();
 
         public MainWindow()
         {
             InitializeComponent();
-            Left.IsEnabled = false;
-            Right.IsEnabled = false;
-            Top.IsEnabled = false;
-            Bot.IsEnabled = false;
+            //Left.IsEnabled = false;
+            //Right.IsEnabled = false;
+            //Top.IsEnabled = false;
+            //Bot.IsEnabled = false;
+            
         }
 
         private async void Left_Click(object sender, RoutedEventArgs e)
@@ -70,7 +73,10 @@ namespace EV3_Test
             try
             {
                 brick = new Brick(new BluetoothCommunication(result));
-                Arrows_Activate();
+                //Left.IsEnabled = true;
+                //Right.IsEnabled = true;
+                //Top.IsEnabled = true;
+                //Bot.IsEnabled = true;
                 await brick.ConnectAsync();
             }
             catch (Exception ex)
@@ -86,7 +92,10 @@ namespace EV3_Test
             try
             {
                 brick = new Brick(new UsbCommunication());
-                Arrows_Activate();
+                //Left.IsEnabled = true;
+                //Right.IsEnabled = true;
+                //Top.IsEnabled = true;
+                //Bot.IsEnabled = true;
                 await brick.ConnectAsync();
             }
             catch (Exception ex)
@@ -95,7 +104,7 @@ namespace EV3_Test
                 MessageBox.Show("연결 실패", "USB 연결");
             }
         }
-
+        
         private void Debug_Click(object sender, RoutedEventArgs e)
         {
             string res = Microsoft.VisualBasic.Interaction.InputBox
@@ -111,13 +120,40 @@ namespace EV3_Test
                 back_po = Convert.ToInt32(realvalue["BackPower"]);
             }
         }
-        
-        private void Arrows_Activate()
+
+        private void Ellipse_MouseMove(object sender, MouseEventArgs e)
         {
-                Left.IsEnabled = true;
-                Right.IsEnabled = true;
-                Top.IsEnabled = true;
-                Bot.IsEnabled = true;  
+            double fJoystickRadius = Joystick.Height * 0.5;
+
+            //Make coords related to the center
+            Vector vtJoystickPos = e.GetPosition(Joystick) - new Point(fJoystickRadius, fJoystickRadius);
+
+            //Normalize coords
+            vtJoystickPos /= fJoystickRadius;
+
+            //Limit R [0; 1]
+            if (vtJoystickPos.Length > 1.0)
+                vtJoystickPos.Normalize();
+
+            //Polar coord system
+            double fTheta = Math.Atan2(vtJoystickPos.Y, vtJoystickPos.X);
+            
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                m_vtJoystickPos = vtJoystickPos;
+                UpdateKnobPosition();
+            }
         }
+
+        void UpdateKnobPosition()
+        {
+            double fJoystickRadius = Joystick.Height * 0.5;
+            double fKnobRadius = Knob.Width * 0.5;
+            Canvas.SetLeft(Knob, Canvas.GetLeft(Joystick) +
+                m_vtJoystickPos.X * fJoystickRadius + fJoystickRadius - fKnobRadius);
+            Canvas.SetTop(Knob, Canvas.GetTop(Joystick) +
+                m_vtJoystickPos.Y * fJoystickRadius + fJoystickRadius - fKnobRadius);
+        }
+
     }
 }
