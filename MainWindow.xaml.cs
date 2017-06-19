@@ -70,10 +70,7 @@ namespace EV3_Test
             try
             {
                 brick = new Brick(new BluetoothCommunication(result));
-                Left.IsEnabled = true;
-                Right.IsEnabled = true;
-                Top.IsEnabled = true;
-                Bot.IsEnabled = true;
+                Arrows_Activate();
                 await brick.ConnectAsync();
             }
             catch (Exception ex)
@@ -89,10 +86,7 @@ namespace EV3_Test
             try
             {
                 brick = new Brick(new UsbCommunication());
-                Left.IsEnabled = true;
-                Right.IsEnabled = true;
-                Top.IsEnabled = true;
-                Bot.IsEnabled = true;
+                Arrows_Activate();
                 await brick.ConnectAsync();
             }
             catch (Exception ex)
@@ -116,6 +110,14 @@ namespace EV3_Test
                 fo_po = Convert.ToInt32(realvalue["FoPower"]);
                 back_po = Convert.ToInt32(realvalue["BackPower"]);
             }
+        }
+        
+        private void Arrows_Activate()
+        {
+                Left.IsEnabled = true;
+                Right.IsEnabled = true;
+                Top.IsEnabled = true;
+                Bot.IsEnabled = true;  
         }
     }
 }
