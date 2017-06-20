@@ -12,28 +12,10 @@
                 <Grid.Resources>
                     <local:HalfValueConverter x:Key="HalfValue"/>
                 </Grid.Resources>
-                <Canvas Name="LayoutRoot">
-                    <Ellipse Fill="White" Name="Joystick" Height="125" Width="125" Stroke="Black" MouseMove="Ellipse_MouseMove">
-                        <Canvas.Left>
-                            <MultiBinding Converter="{StaticResource HalfValue}">
-                                <Binding Path="ActualWidth" ElementName="LayoutRoot"/>
-                                <Binding Path="ActualWidth" ElementName="LayoutRoot"/>
-                            </MultiBinding>
-                        </Canvas.Left>
-                        <Canvas.Top>
-                            <MultiBinding Converter="{StaticResource HalfValue}">
-                                <Binding Path="ActualHeight" ElementName="LayoutRoot"/>
-                                <Binding Path="ActualHeight" ElementName="LayoutRoot"/>
-                            </MultiBinding>
-                        </Canvas.Top>
-                    </Ellipse>
-                    <Ellipse Fill="Black" Name="Knob" Height="16"
-                             Stroke="Black" Width="15" MouseMove="Ellipse_MouseMove"/>
-                </Canvas>
-                <!--Button Name="Left" Width="60" Height="60" FontSize="20" Click="Left_Click" Margin="0 0 140 0">◀</Button>
+                <Button Name="Left" Width="60" Height="60" FontSize="20" Click="Left_Click" Margin="0 0 140 0">◀</Button>
                 <Button Name="Right" Width="60" Height="60" FontSize="20" Click="Right_Click" Margin="140 0 0 0">▶</Button>
                 <Button Name="Top" Width="60" Height="60" FontSize="20" Click="Top_Click" Margin="0 0 0 140">▲</Button>
-                <Button Name="Bot" Width="60" Height="60" FontSize="20" Click="Bot_Click" Margin="0 140 0 0">▼</Button-->
+                <Button Name="Bot" Width="60" Height="60" FontSize="20" Click="Bot_Click" Margin="0 140 0 0">▼</Button>
             </Grid>
             <GridSplitter Width="3"></GridSplitter>
             <Grid Width="225" HorizontalAlignment="Right">
