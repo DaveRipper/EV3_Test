@@ -34,11 +34,7 @@ namespace EV3_Test
         public MainWindow()
         {
             InitializeComponent();
-            //Left.IsEnabled = false;
-            //Right.IsEnabled = false;
-            //Top.IsEnabled = false;
-            //Bot.IsEnabled = false;
-            
+            LayoutRoot.IsEnabled = false;
         }
 
         private async void Left_Click(object sender, RoutedEventArgs e)
@@ -73,10 +69,7 @@ namespace EV3_Test
             try
             {
                 brick = new Brick(new BluetoothCommunication(result));
-                //Left.IsEnabled = true;
-                //Right.IsEnabled = true;
-                //Top.IsEnabled = true;
-                //Bot.IsEnabled = true;
+                LayoutRoot.IsEnabled = false;
                 await brick.ConnectAsync();
             }
             catch (Exception ex)
@@ -92,10 +85,7 @@ namespace EV3_Test
             try
             {
                 brick = new Brick(new UsbCommunication());
-                //Left.IsEnabled = true;
-                //Right.IsEnabled = true;
-                //Top.IsEnabled = true;
-                //Bot.IsEnabled = true;
+                LayoutRoot.IsEnabled = false;
                 await brick.ConnectAsync();
             }
             catch (Exception ex)
@@ -124,18 +114,10 @@ namespace EV3_Test
         private void Ellipse_MouseMove(object sender, MouseEventArgs e)
         {
             double fJoystickRadius = Joystick.Height * 0.5;
-
-            //Make coords related to the center
             Vector vtJoystickPos = e.GetPosition(Joystick) - new Point(fJoystickRadius, fJoystickRadius);
-
-            //Normalize coords
             vtJoystickPos /= fJoystickRadius;
-
-            //Limit R [0; 1]
             if (vtJoystickPos.Length > 1.0)
                 vtJoystickPos.Normalize();
-
-            //Polar coord system
             double fTheta = Math.Atan2(vtJoystickPos.Y, vtJoystickPos.X);
             
             if (e.LeftButton == MouseButtonState.Pressed)
@@ -154,6 +136,5 @@ namespace EV3_Test
             Canvas.SetTop(Knob, Canvas.GetTop(Joystick) +
                 m_vtJoystickPos.Y * fJoystickRadius + fJoystickRadius - fKnobRadius);
         }
-
     }
 }
