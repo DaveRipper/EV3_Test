@@ -34,7 +34,6 @@ namespace EV3_Test
         public MainWindow()
         {
             InitializeComponent();
-            LayoutRoot.IsEnabled = false;
         }
 
         private async void Left_Click(object sender, RoutedEventArgs e)
@@ -124,6 +123,11 @@ namespace EV3_Test
             {
                 m_vtJoystickPos = vtJoystickPos;
                 UpdateKnobPosition();
+            }
+            else
+            {
+                Canvas.SetLeft(Knob, (LayoutRoot.ActualWidth - Knob.Width) / 2);
+                Canvas.SetTop(Knob, (LayoutRoot.ActualHeight - Knob.Height) / 2);
             }
         }
 
