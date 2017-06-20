@@ -17,18 +17,30 @@
                         <Canvas.Left>
                             <MultiBinding Converter="{StaticResource HalfValue}">
                                 <Binding Path="ActualWidth" ElementName="LayoutRoot"/>
-                                <Binding Path="ActualWidth" ElementName="LayoutRoot"/>
+                                <Binding Path="ActualWidth" ElementName="Joystick"/>
                             </MultiBinding>
                         </Canvas.Left>
                         <Canvas.Top>
                             <MultiBinding Converter="{StaticResource HalfValue}">
                                 <Binding Path="ActualHeight" ElementName="LayoutRoot"/>
-                                <Binding Path="ActualHeight" ElementName="LayoutRoot"/>
+                                <Binding Path="ActualHeight" ElementName="Joystick"/>
                             </MultiBinding>
                         </Canvas.Top>
                     </Ellipse>
-                    <Ellipse Fill="Black" Name="Knob" Height="16"
-                             Stroke="Black" Width="15" MouseMove="Ellipse_MouseMove"/>
+                    <Ellipse Fill="Black" Name="Knob" Height="16" Stroke="Black" Width="15" MouseMove="Ellipse_MouseMove">
+                        <Canvas.Left>
+                            <MultiBinding Converter="{StaticResource HalfValue}">
+                                <Binding Path="ActualWidth" ElementName="LayoutRoot"/>
+                                <Binding Path="ActualWidth" ElementName="Knob"/>
+                            </MultiBinding>
+                        </Canvas.Left>
+                        <Canvas.Top>
+                            <MultiBinding Converter="{StaticResource HalfValue}">
+                                <Binding Path="ActualHeight" ElementName="LayoutRoot"/>
+                                <Binding Path="ActualHeight" ElementName="Knob"/>
+                            </MultiBinding>
+                        </Canvas.Top>
+                    </Ellipse>
                 </Canvas>
             </Grid>
             <GridSplitter Width="3"></GridSplitter>
