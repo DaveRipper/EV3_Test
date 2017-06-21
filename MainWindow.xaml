@@ -12,10 +12,14 @@
                 <Grid.Resources>
                     <local:HalfValueConverter x:Key="HalfValue"/>
                 </Grid.Resources>
-                <Button Name="Left" Width="60" Height="60" FontSize="20" Click="Left_Click" Margin="0 0 140 0">◀</Button>
-                <Button Name="Right" Width="60" Height="60" FontSize="20" Click="Right_Click" Margin="140 0 0 0">▶</Button>
-                <Button Name="Top" Width="60" Height="60" FontSize="20" Click="Top_Click" Margin="0 0 0 140">▲</Button>
-                <Button Name="Bot" Width="60" Height="60" FontSize="20" Click="Bot_Click" Margin="0 140 0 0">▼</Button>
+                <Button Name="Left" Width="60" Height="60" FontSize="20" PreviewMouseLeftButtonDown="Left_PreviewMouseLeftButtonDown" 
+                        PreviewMouseLeftButtonUp="Left_PreviewMouseLeftButtonUp" Margin="0 0 140 0">◀</Button>
+                <Button Name="Right" Width="60" Height="60" FontSize="20" PreviewMouseLeftButtonDown="Right_PreviewMouseLeftButtonDown" 
+                        PreviewMouseLeftButtonUp="Right_PreviewMouseLeftButtonUp" Margin="140 0 0 0">▶</Button>
+                <Button Name="Top" Width="60" Height="60" FontSize="20" PreviewMouseLeftButtonDown="Top_PreviewMouseLeftButtonDown" 
+                        PreviewMouseLeftButtonUp="Top_PreviewMouseLeftButtonUp" Margin="0 0 0 140">▲</Button>
+                <Button Name="Bot" Width="60" Height="60" FontSize="20" PreviewMouseLeftButtonDown="Bot_PreviewMouseLeftButtonDown" 
+                        PreviewMouseLeftButtonUp="Bot_PreviewMouseLeftButtonUp" Margin="0 140 0 0">▼</Button>
             </Grid>
             <GridSplitter Width="3"></GridSplitter>
             <Grid Width="225" HorizontalAlignment="Right">

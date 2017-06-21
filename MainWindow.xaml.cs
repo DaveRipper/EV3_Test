@@ -29,7 +29,7 @@ namespace EV3_Test
         string ri = "C";
         int fo_po = 60;
         int back_po = -60;
-        Vector m_vtJoystickPos = new Vector();
+        Vector joystick_pos = new Vector();
 
         public MainWindow()
         {
@@ -39,31 +39,50 @@ namespace EV3_Test
             Top.IsEnabled = false;
             Bot.IsEnabled = false;
         }
-
-        private async void Left_Click(object sender, RoutedEventArgs e)
+        private async void Left_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             brick.BatchCommand.TurnMotorAtPower((OutputPort)Enum.Parse(typeof(OutputPort), le), back_po);
             brick.BatchCommand.TurnMotorAtPower((OutputPort)Enum.Parse(typeof(OutputPort), ri), fo_po);
             await brick.BatchCommand.SendCommandAsync();
         }
+        
+        private async void Left_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            await brick.DirectCommand.StopMotorAsync(OutputPort.All, false);
+        }
 
-        private async void Right_Click(object sender, RoutedEventArgs e)
+        private async void Right_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             brick.BatchCommand.TurnMotorAtPower((OutputPort)Enum.Parse(typeof(OutputPort), ri), back_po);
             brick.BatchCommand.TurnMotorAtPower((OutputPort)Enum.Parse(typeof(OutputPort), le), fo_po);
             await brick.BatchCommand.SendCommandAsync();
         }
 
-        private async void Top_Click(object sender, RoutedEventArgs e)
+        private async void Right_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            await brick.DirectCommand.StopMotorAsync(OutputPort.All, false);
+        }
+
+        private async void Top_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             await brick.DirectCommand.TurnMotorAtPowerAsync(
                 (OutputPort)Enum.Parse(typeof(OutputPort), le) | (OutputPort)Enum.Parse(typeof(OutputPort), ri), fo_po);
         }
 
-        private async void Bot_Click(object sender, RoutedEventArgs e)
+        private async void Top_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            await brick.DirectCommand.StopMotorAsync(OutputPort.All, false);
+        }
+
+        private async void Bot_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             await brick.DirectCommand.TurnMotorAtPowerAsync(
                 (OutputPort)Enum.Parse(typeof(OutputPort), le) | (OutputPort)Enum.Parse(typeof(OutputPort), ri), back_po);
+        }
+        
+        private async void Bot_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            await brick.DirectCommand.StopMotorAsync(OutputPort.All, false);
         }
 
         private async void Connection_Blue_Click(object sender, RoutedEventArgs e)
