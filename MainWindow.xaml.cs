@@ -29,15 +29,16 @@ namespace EV3_Test
         string ri = "C";
         int fo_po = 60;
         int back_po = -60;
+        bool brakeatstop = false;
         Vector joystick_pos = new Vector();
 
         public MainWindow()
         {
             InitializeComponent();
-            Left.IsEnabled = false;
-            Right.IsEnabled = false;
-            Top.IsEnabled = false;
-            Bot.IsEnabled = false;
+            Button_Field.IsEnabled = false;
+            Joystick_Field.IsEnabled = false;
+            Button_Field.Visibility = Visibility.Visible;
+            Joystick_Field.Visibility = Visibility.Hidden;
         }
 
         private async void Left_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -49,7 +50,7 @@ namespace EV3_Test
         
         private async void Left_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            await brick.DirectCommand.StopMotorAsync(OutputPort.All, false);
+            await brick.DirectCommand.StopMotorAsync(OutputPort.All, brakeatstop);
         }
 
         private async void Right_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -61,7 +62,7 @@ namespace EV3_Test
 
         private async void Right_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            await brick.DirectCommand.StopMotorAsync(OutputPort.All, false);
+            await brick.DirectCommand.StopMotorAsync(OutputPort.All, brakeatstop);
         }
 
         private async void Top_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -72,7 +73,7 @@ namespace EV3_Test
 
         private async void Top_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            await brick.DirectCommand.StopMotorAsync(OutputPort.All, false);
+            await brick.DirectCommand.StopMotorAsync(OutputPort.All, brakeatstop);
         }
 
         private async void Bot_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -83,7 +84,61 @@ namespace EV3_Test
         
         private async void Bot_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            await brick.DirectCommand.StopMotorAsync(OutputPort.All, false);
+            await brick.DirectCommand.StopMotorAsync(OutputPort.All, brakeatstop);
+        }
+
+        private async void Left_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if ((Keyboard.GetKeyStates(Key.Left) & KeyStates.Down) > 0)
+            {
+                brick.BatchCommand.TurnMotorAtPower((OutputPort)Enum.Parse(typeof(OutputPort), le), back_po);
+                brick.BatchCommand.TurnMotorAtPower((OutputPort)Enum.Parse(typeof(OutputPort), ri), fo_po);
+                await brick.BatchCommand.SendCommandAsync();
+            }
+        }
+
+        private async void Right_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if ((Keyboard.GetKeyStates(Key.Right) & KeyStates.Down) > 0)
+            {
+                brick.BatchCommand.TurnMotorAtPower((OutputPort)Enum.Parse(typeof(OutputPort), ri), back_po);
+                brick.BatchCommand.TurnMotorAtPower((OutputPort)Enum.Parse(typeof(OutputPort), le), fo_po);
+                await brick.BatchCommand.SendCommandAsync();
+            }
+        }
+
+        private async void Top_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if ((Keyboard.GetKeyStates(Key.Up) & KeyStates.Down) > 0)
+                await brick.DirectCommand.TurnMotorAtPowerAsync(
+                    (OutputPort)Enum.Parse(typeof(OutputPort), le) | (OutputPort)Enum.Parse(typeof(OutputPort), ri), fo_po);
+        }
+
+        private async void Bot_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if ((Keyboard.GetKeyStates(Key.Down) & KeyStates.Down) > 0)
+                await brick.DirectCommand.TurnMotorAtPowerAsync(
+                    (OutputPort)Enum.Parse(typeof(OutputPort), le) | (OutputPort)Enum.Parse(typeof(OutputPort), ri), back_po);
+        }
+
+        private async void Left_PreviewKeyUp(object sender, KeyEventArgs e)
+        {
+            await brick.DirectCommand.StopMotorAsync(OutputPort.All, brakeatstop);
+        }
+
+        private async void Right_PreviewKeyUp(object sender, KeyEventArgs e)
+        {
+            await brick.DirectCommand.StopMotorAsync(OutputPort.All, brakeatstop);
+        }
+
+        private async void Top_PreviewKeyUp(object sender, KeyEventArgs e)
+        {
+            await brick.DirectCommand.StopMotorAsync(OutputPort.All, brakeatstop);
+        }
+
+        private async void Bot_PreviewKeyUp(object sender, KeyEventArgs e)
+        {
+            await brick.DirectCommand.StopMotorAsync(OutputPort.All, brakeatstop);
         }
 
         private async void Connection_Blue_Click(object sender, RoutedEventArgs e)
@@ -129,7 +184,7 @@ namespace EV3_Test
         private void Debug_Click(object sender, RoutedEventArgs e)
         {
             string res = Microsoft.VisualBasic.Interaction.InputBox
-                ("디버그 명령어를 입력하십시오.", "디버그 관리자", $"Left:{le},Right:{ri},FoPower:{fo_po},BackPower:{back_po}");
+                ("디버그 명령어를 입력하십시오.", "디버그 관리자", $"Left:{le},Right:{ri},FoPower:{fo_po},BackPower:{back_po},BrakeAtStop:{brakeatstop}");
             if (res != "")
             {
                 string[] highvalue = res.Replace(" ", "").Split(',');
@@ -139,10 +194,11 @@ namespace EV3_Test
                 ri = realvalue["Right"];
                 fo_po = Convert.ToInt32(realvalue["FoPower"]);
                 back_po = Convert.ToInt32(realvalue["BackPower"]);
+                brakeatstop = Convert.ToBoolean(realvalue["BrakeAtStop"]);
             }
         }
 
-        private void Ellipse_MouseMove(object sender, MouseEventArgs e)
+        private async void Ellipse_MouseMove(object sender, MouseEventArgs e)
         {
             double fJoystickRadius = Joystick.Height * 0.5;
             Vector vtJoystickPos = e.GetPosition(Joystick) - new Point(fJoystickRadius, fJoystickRadius);
@@ -153,13 +209,15 @@ namespace EV3_Test
             
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                m_vtJoystickPos = vtJoystickPos;
+                joystick_pos = vtJoystickPos;
+                Console.WriteLine($"X:{joystick_pos.X}, Y:{joystick_pos.Y}");
                 UpdateKnobPosition();
             }
             else
             {
                 Canvas.SetLeft(Knob, (LayoutRoot.ActualWidth - Knob.Width) / 2);
                 Canvas.SetTop(Knob, (LayoutRoot.ActualHeight - Knob.Height) / 2);
+                //await brick.DirectCommand.StopMotorAsync(OutputPort.All, brakeatstop);
             }
         }
 
@@ -168,9 +226,27 @@ namespace EV3_Test
             double fJoystickRadius = Joystick.Height * 0.5;
             double fKnobRadius = Knob.Width * 0.5;
             Canvas.SetLeft(Knob, Canvas.GetLeft(Joystick) +
-                m_vtJoystickPos.X * fJoystickRadius + fJoystickRadius - fKnobRadius);
+                joystick_pos.X * fJoystickRadius + fJoystickRadius - fKnobRadius);
             Canvas.SetTop(Knob, Canvas.GetTop(Joystick) +
-                m_vtJoystickPos.Y * fJoystickRadius + fJoystickRadius - fKnobRadius);
+                joystick_pos.Y * fJoystickRadius + fJoystickRadius - fKnobRadius);
+        }
+
+        private void Joystick_Radio_Checked(object sender, RoutedEventArgs e)
+        {
+            Button_Field.IsEnabled = false;
+            Joystick_Field.IsEnabled = true;
+            Button_Field.Visibility = Visibility.Hidden;
+            Joystick_Field.Visibility = Visibility.Visible;
+            MainGrid.Focus();
+        }
+
+        private void Button_Radio_Checked(object sender, RoutedEventArgs e)
+        {
+            Button_Field.IsEnabled = true;
+            Joystick_Field.IsEnabled = false;
+            Joystick_Field.Visibility = Visibility.Hidden;
+            Button_Field.Visibility = Visibility.Visible;
+            MainGrid.Focus();
         }
     }
 }

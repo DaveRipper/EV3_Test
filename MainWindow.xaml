@@ -6,58 +6,70 @@
         xmlns:local="clr-namespace:EV3_Test"
         mc:Ignorable="d"
         Title="EV3 Controlor" Height="350" Width="525" ResizeMode="NoResize">
-    <Grid>
+    <Grid x:Name="MainGrid">
         <StackPanel Orientation="Horizontal">
             <Grid Width="300" HorizontalAlignment="Left">
                 <Grid.Resources>
                     <local:HalfValueConverter x:Key="HalfValue"/>
                 </Grid.Resources>
-                <Canvas Name="LayoutRoot">
-                    <Ellipse Fill="White" Name="Joystick" Height="125" Width="125" Stroke="Black" MouseMove="Ellipse_MouseMove">
-                        <Canvas.Left>
-                            <MultiBinding Converter="{StaticResource HalfValue}">
-                                <Binding Path="ActualWidth" ElementName="LayoutRoot"/>
-                                <Binding Path="ActualWidth" ElementName="Joystick"/>
-                            </MultiBinding>
-                        </Canvas.Left>
-                        <Canvas.Top>
-                            <MultiBinding Converter="{StaticResource HalfValue}">
-                                <Binding Path="ActualHeight" ElementName="LayoutRoot"/>
-                                <Binding Path="ActualHeight" ElementName="Joystick"/>
-                            </MultiBinding>
-                        </Canvas.Top>
-                    </Ellipse>
-                    <Ellipse Fill="Black" Name="Knob" Height="16" Stroke="Black" Width="15" MouseMove="Ellipse_MouseMove">
-                        <Canvas.Left>
-                            <MultiBinding Converter="{StaticResource HalfValue}">
-                                <Binding Path="ActualWidth" ElementName="LayoutRoot"/>
-                                <Binding Path="ActualWidth" ElementName="Knob"/>
-                            </MultiBinding>
-                        </Canvas.Left>
-                        <Canvas.Top>
-                            <MultiBinding Converter="{StaticResource HalfValue}">
-                                <Binding Path="ActualHeight" ElementName="LayoutRoot"/>
-                                <Binding Path="ActualHeight" ElementName="Knob"/>
-                            </MultiBinding>
-                        </Canvas.Top>
-                    </Ellipse>
-                </Canvas>
-                <Button Name="Left" Width="60" Height="60" FontSize="20" PreviewMouseLeftButtonDown="Left_PreviewMouseLeftButtonDown" 
-                        PreviewMouseLeftButtonUp="Left_PreviewMouseLeftButtonUp" Margin="0 0 140 0">◀</Button>
-                <Button Name="Right" Width="60" Height="60" FontSize="20" PreviewMouseLeftButtonDown="Right_PreviewMouseLeftButtonDown" 
-                        PreviewMouseLeftButtonUp="Right_PreviewMouseLeftButtonUp" Margin="140 0 0 0">▶</Button>
-                <Button Name="Top" Width="60" Height="60" FontSize="20" PreviewMouseLeftButtonDown="Top_PreviewMouseLeftButtonDown" 
-                        PreviewMouseLeftButtonUp="Top_PreviewMouseLeftButtonUp" Margin="0 0 0 140">▲</Button>
-                <Button Name="Bot" Width="60" Height="60" FontSize="20" PreviewMouseLeftButtonDown="Bot_PreviewMouseLeftButtonDown" 
-                        PreviewMouseLeftButtonUp="Bot_PreviewMouseLeftButtonUp" Margin="0 140 0 0">▼</Button>
+                <Grid x:Name="Joystick_Field">
+                    <Canvas Name="LayoutRoot">
+                        <Ellipse Fill="White" Name="Joystick" Height="125" Width="125" Stroke="Black" MouseMove="Ellipse_MouseMove">
+                            <Canvas.Left>
+                                <MultiBinding Converter="{StaticResource HalfValue}">
+                                    <Binding Path="ActualWidth" ElementName="LayoutRoot"/>
+                                    <Binding Path="ActualWidth" ElementName="Joystick"/>
+                                </MultiBinding>
+                            </Canvas.Left>
+                            <Canvas.Top>
+                                <MultiBinding Converter="{StaticResource HalfValue}">
+                                    <Binding Path="ActualHeight" ElementName="LayoutRoot"/>
+                                    <Binding Path="ActualHeight" ElementName="Joystick"/>
+                                </MultiBinding>
+                            </Canvas.Top>
+                        </Ellipse>
+                        <Ellipse Fill="Black" Name="Knob" Height="16" Stroke="Black" Width="15" MouseMove="Ellipse_MouseMove">
+                            <Canvas.Left>
+                                <MultiBinding Converter="{StaticResource HalfValue}">
+                                    <Binding Path="ActualWidth" ElementName="LayoutRoot"/>
+                                    <Binding Path="ActualWidth" ElementName="Knob"/>
+                                </MultiBinding>
+                            </Canvas.Left>
+                            <Canvas.Top>
+                                <MultiBinding Converter="{StaticResource HalfValue}">
+                                    <Binding Path="ActualHeight" ElementName="LayoutRoot"/>
+                                    <Binding Path="ActualHeight" ElementName="Knob"/>
+                                </MultiBinding>
+                            </Canvas.Top>
+                        </Ellipse>
+                    </Canvas>
+                </Grid>
+                <Grid x:Name="Button_Field">
+                    <Button Name="Left" Width="60" Height="60" FontSize="20" PreviewMouseLeftButtonDown="Left_PreviewMouseLeftButtonDown" 
+                        PreviewMouseLeftButtonUp="Left_PreviewMouseLeftButtonUp" PreviewKeyDown="Left_PreviewKeyDown" 
+                            PreviewKeyUp="Left_PreviewKeyUp" Margin="0 0 140 0">◀</Button>
+                    <Button Name="Right" Width="60" Height="60" FontSize="20" PreviewMouseLeftButtonDown="Right_PreviewMouseLeftButtonDown" 
+                        PreviewMouseLeftButtonUp="Right_PreviewMouseLeftButtonUp" PreviewKeyDown="Right_PreviewKeyDown" 
+                            PreviewKeyUp="Right_PreviewKeyUp" Margin="140 0 0 0">▶</Button>
+                    <Button Name="Top" Width="60" Height="60" FontSize="20" PreviewMouseLeftButtonDown="Top_PreviewMouseLeftButtonDown" 
+                        PreviewMouseLeftButtonUp="Top_PreviewMouseLeftButtonUp" PreviewKeyDown="Top_PreviewKeyDown" 
+                            PreviewKeyUp="Top_PreviewKeyUp" Margin="0 0 0 140">▲</Button>
+                    <Button Name="Bot" Width="60" Height="60" FontSize="20" PreviewMouseLeftButtonDown="Bot_PreviewMouseLeftButtonDown" 
+                        PreviewMouseLeftButtonUp="Bot_PreviewMouseLeftButtonUp" PreviewKeyDown="Bot_PreviewKeyDown" 
+                            PreviewKeyUp="Bot_PreviewKeyUp" Margin="0 140 0 0">▼</Button>
+                </Grid>
             </Grid>
             <GridSplitter Width="3"/>
             <Grid Width="225" HorizontalAlignment="Right">
-                <Grid Height="Auto" VerticalAlignment="Center">
-                    <Button Name="Connection_Blue" Width="120" Height="30" Margin="0 0 0 80" Click="Connection_Blue_Click" >블루투스로 연결</Button>
-                    <Button Name="Connection_Usb" Width="120" Height="30" Margin="0 0 0 0" Click="Connection_Usb_Click">USB로 연결</Button>
-                    <Button Name="Debug" Width="120" Height="30" Margin="0 80 0 0" Click="Debug_Click">디버그</Button>
-                </Grid>
+                <StackPanel Height="Auto" VerticalAlignment="Center" Orientation="Vertical">
+                    <Button Name="Connection_Blue" Width="120" Height="30" Margin="0 0 0 0" Click="Connection_Blue_Click">블루투스로 연결</Button>
+                    <Button Name="Connection_Usb" Width="120" Height="30" Margin="0 10 0 0" Click="Connection_Usb_Click">USB로 연결</Button>
+                    <Button Name="Debug" Width="120" Height="30" Margin="0 10 0 0" Click="Debug_Click">디버그</Button>
+                    <RadioButton x:Name="Joystick_Radio" HorizontalAlignment="Center" Margin="0 10 0 0"
+                                 Checked="Joystick_Radio_Checked" >조이스틱</RadioButton>
+                    <RadioButton x:Name="Button_Radio" HorizontalAlignment="Center" Margin="0 5 0 0" IsChecked="True"
+                                 Checked="Button_Radio_Checked" >버튼</RadioButton>
+                </StackPanel>
             </Grid>
         </StackPanel>
     </Grid>
