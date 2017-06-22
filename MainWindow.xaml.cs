@@ -92,6 +92,7 @@ namespace EV3_Test
             try
             {
                 brick = new Brick(new BluetoothCommunication(result));
+                LayoutRoot.IsEnabled = false;
                 Left.IsEnabled = true;
                 Right.IsEnabled = true;
                 Top.IsEnabled = true;
@@ -111,6 +112,7 @@ namespace EV3_Test
             try
             {
                 brick = new Brick(new UsbCommunication());
+                LayoutRoot.IsEnabled = false;
                 Left.IsEnabled = true;
                 Right.IsEnabled = true;
                 Top.IsEnabled = true;
@@ -138,6 +140,37 @@ namespace EV3_Test
                 fo_po = Convert.ToInt32(realvalue["FoPower"]);
                 back_po = Convert.ToInt32(realvalue["BackPower"]);
             }
+        }
+
+        private void Ellipse_MouseMove(object sender, MouseEventArgs e)
+        {
+            double fJoystickRadius = Joystick.Height * 0.5;
+            Vector vtJoystickPos = e.GetPosition(Joystick) - new Point(fJoystickRadius, fJoystickRadius);
+            vtJoystickPos /= fJoystickRadius;
+            if (vtJoystickPos.Length > 1.0)
+                vtJoystickPos.Normalize();
+            double fTheta = Math.Atan2(vtJoystickPos.Y, vtJoystickPos.X);
+            
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                m_vtJoystickPos = vtJoystickPos;
+                UpdateKnobPosition();
+            }
+            else
+            {
+                Canvas.SetLeft(Knob, (LayoutRoot.ActualWidth - Knob.Width) / 2);
+                Canvas.SetTop(Knob, (LayoutRoot.ActualHeight - Knob.Height) / 2);
+            }
+        }
+
+        void UpdateKnobPosition()
+        {
+            double fJoystickRadius = Joystick.Height * 0.5;
+            double fKnobRadius = Knob.Width * 0.5;
+            Canvas.SetLeft(Knob, Canvas.GetLeft(Joystick) +
+                m_vtJoystickPos.X * fJoystickRadius + fJoystickRadius - fKnobRadius);
+            Canvas.SetTop(Knob, Canvas.GetTop(Joystick) +
+                m_vtJoystickPos.Y * fJoystickRadius + fJoystickRadius - fKnobRadius);
         }
     }
 }

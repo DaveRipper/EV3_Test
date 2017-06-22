@@ -9,6 +9,39 @@
     <Grid>
         <StackPanel Orientation="Horizontal">
             <Grid Width="300" HorizontalAlignment="Left">
+                <Grid.Resources>
+                    <local:HalfValueConverter x:Key="HalfValue"/>
+                </Grid.Resources>
+                <Canvas Name="LayoutRoot">
+                    <Ellipse Fill="White" Name="Joystick" Height="125" Width="125" Stroke="Black" MouseMove="Ellipse_MouseMove">
+                        <Canvas.Left>
+                            <MultiBinding Converter="{StaticResource HalfValue}">
+                                <Binding Path="ActualWidth" ElementName="LayoutRoot"/>
+                                <Binding Path="ActualWidth" ElementName="Joystick"/>
+                            </MultiBinding>
+                        </Canvas.Left>
+                        <Canvas.Top>
+                            <MultiBinding Converter="{StaticResource HalfValue}">
+                                <Binding Path="ActualHeight" ElementName="LayoutRoot"/>
+                                <Binding Path="ActualHeight" ElementName="Joystick"/>
+                            </MultiBinding>
+                        </Canvas.Top>
+                    </Ellipse>
+                    <Ellipse Fill="Black" Name="Knob" Height="16" Stroke="Black" Width="15" MouseMove="Ellipse_MouseMove">
+                        <Canvas.Left>
+                            <MultiBinding Converter="{StaticResource HalfValue}">
+                                <Binding Path="ActualWidth" ElementName="LayoutRoot"/>
+                                <Binding Path="ActualWidth" ElementName="Knob"/>
+                            </MultiBinding>
+                        </Canvas.Left>
+                        <Canvas.Top>
+                            <MultiBinding Converter="{StaticResource HalfValue}">
+                                <Binding Path="ActualHeight" ElementName="LayoutRoot"/>
+                                <Binding Path="ActualHeight" ElementName="Knob"/>
+                            </MultiBinding>
+                        </Canvas.Top>
+                    </Ellipse>
+                </Canvas>
                 <Button Name="Left" Width="60" Height="60" FontSize="20" PreviewMouseLeftButtonDown="Left_PreviewMouseLeftButtonDown" 
                         PreviewMouseLeftButtonUp="Left_PreviewMouseLeftButtonUp" Margin="0 0 140 0">◀</Button>
                 <Button Name="Right" Width="60" Height="60" FontSize="20" PreviewMouseLeftButtonDown="Right_PreviewMouseLeftButtonDown" 
