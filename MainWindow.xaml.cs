@@ -39,6 +39,7 @@ namespace EV3_Test
             Top.IsEnabled = false;
             Bot.IsEnabled = false;
         }
+
         private async void Left_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             brick.BatchCommand.TurnMotorAtPower((OutputPort)Enum.Parse(typeof(OutputPort), le), back_po);

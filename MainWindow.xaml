@@ -9,9 +9,6 @@
     <Grid>
         <StackPanel Orientation="Horizontal">
             <Grid Width="300" HorizontalAlignment="Left">
-                <Grid.Resources>
-                    <local:HalfValueConverter x:Key="HalfValue"/>
-                </Grid.Resources>
                 <Button Name="Left" Width="60" Height="60" FontSize="20" PreviewMouseLeftButtonDown="Left_PreviewMouseLeftButtonDown" 
                         PreviewMouseLeftButtonUp="Left_PreviewMouseLeftButtonUp" Margin="0 0 140 0">◀</Button>
                 <Button Name="Right" Width="60" Height="60" FontSize="20" PreviewMouseLeftButtonDown="Right_PreviewMouseLeftButtonDown" 
@@ -21,15 +18,12 @@
                 <Button Name="Bot" Width="60" Height="60" FontSize="20" PreviewMouseLeftButtonDown="Bot_PreviewMouseLeftButtonDown" 
                         PreviewMouseLeftButtonUp="Bot_PreviewMouseLeftButtonUp" Margin="0 140 0 0">▼</Button>
             </Grid>
-            <GridSplitter Width="3"></GridSplitter>
+            <GridSplitter Width="3"/>
             <Grid Width="225" HorizontalAlignment="Right">
                 <Grid Height="Auto" VerticalAlignment="Center">
-                    <Button Name="Connection_Blue" Width="120" Height="30" Margin="0 0 0 80"
-                        Click="Connection_Blue_Click" >블루투스로 연결</Button>
-                    <Button Name="Connection_Usb" Width="120" Height="30" Margin="0 0 0 0"
-                        Click="Connection_Usb_Click">USB로 연결</Button>
-                    <Button Name="Debug" Width="120" Height="30" Margin="0 80 0 0"
-                        Click="Debug_Click">디버그</Button>
+                    <Button Name="Connection_Blue" Width="120" Height="30" Margin="0 0 0 80" Click="Connection_Blue_Click" >블루투스로 연결</Button>
+                    <Button Name="Connection_Usb" Width="120" Height="30" Margin="0 0 0 0" Click="Connection_Usb_Click">USB로 연결</Button>
+                    <Button Name="Debug" Width="120" Height="30" Margin="0 80 0 0" Click="Debug_Click">디버그</Button>
                 </Grid>
             </Grid>
         </StackPanel>
